@@ -27,6 +27,7 @@
 	},
 	"rules": {
 		"camelcase": "off",
+    "no-use-before-define": "off",
 		"import/no-unresolved": "off",
 		"@typescript-eslint/naming-convention": [
 			"error",

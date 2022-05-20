@@ -1,19 +1,26 @@
 import { sub } from "date-fns";
 
-import { Category } from "../model/category";
-import {
-  ICategoriesRepository,
-  ICreateCategoryDTO,
-} from "./ICategoriesRepository";
+import { Category } from "../model/Category";
+import { IRequestDTO } from "../shared/utils/dtos/IRequestDTO";
+import { ICategoriesRepository } from "./ICategoriesRepository";
 
 class CategoriesRepository implements ICategoriesRepository {
   private categories: Category[];
 
-  constructor() {
+  private static INSTANCE: CategoriesRepository;
+
+  private constructor() {
     this.categories = [];
   }
 
-  create({ name, description }: ICreateCategoryDTO): void {
+  public static getInstance(): CategoriesRepository {
+    if (!CategoriesRepository.INSTANCE) {
+      CategoriesRepository.INSTANCE = new CategoriesRepository();
+    }
+    return CategoriesRepository.INSTANCE;
+  }
+
+  create({ name, description }: IRequestDTO): void {
     const category = new Category();
 
     Object.assign(category, {
