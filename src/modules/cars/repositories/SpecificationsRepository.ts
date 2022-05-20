@@ -1,3 +1,5 @@
+import { sub } from "date-fns";
+
 import { Specification } from "../model/Specification";
 import { IRequestDTO } from "../shared/utils/dtos/IRequestDTO";
 import { ISpecificationsRepository } from "./ISpecificationsRepository";
@@ -24,7 +26,7 @@ class SpecificationsRepository implements ISpecificationsRepository {
     Object.assign(specification, {
       name,
       description,
-      created_at: new Date(),
+      created_at: sub(new Date(), { hours: 3 }),
     });
 
     this.specifications.push(specification);
@@ -38,7 +40,6 @@ class SpecificationsRepository implements ISpecificationsRepository {
     const specification = this.specifications.find(
       (specification) => specification.name === name
     );
-
     return specification;
   }
 }
