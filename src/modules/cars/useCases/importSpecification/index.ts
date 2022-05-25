@@ -1,8 +1,8 @@
-import { CategoriesRepository } from "../../repositories/CategoriesRepository";
+import { SpecificationsRepository } from "../../repositories/SpecificationsRepository";
 import { ImportSpecificationsController } from "./ImportSpecificationsController";
 import { ImportSpecificationsUseCase } from "./ImportSpecificationsUseCase";
 
-const categoriesRepository = CategoriesRepository.getInstance();
+const categoriesRepository = SpecificationsRepository.getInstance();
 
 const importSpecificationUseCase = new ImportSpecificationsUseCase(
   categoriesRepository

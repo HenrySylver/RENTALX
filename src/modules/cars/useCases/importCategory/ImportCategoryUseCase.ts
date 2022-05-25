@@ -12,12 +12,12 @@ class ImportCategoryUseCase {
       const stream = fs.createReadStream(file.path);
       const categories: IImportCategoryDTO[] = [];
 
-      const parseFile = csvParse();
+      const parseFile = csvParse({delimiter: ';'});
 
       stream.pipe(parseFile);
 
       parseFile
-        .on("data", async (line) => {
+        .on("data",async (line) => {
           const [name, description] = line;
           categories.push({
             name,

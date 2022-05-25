@@ -1,17 +1,14 @@
 import express from "express";
-
-import { categoriesRoutes } from "./routes/categories.routes";
-import { specificationsRoutes } from "./routes/specifications.routes";
+import { routes } from "./routes";
+import swaggerUi from "swagger-ui-express";
+import swaggerFile from "./swagger.json"
 
 const app = express();
 
-app.listen(3333, () => console.log("Server is Running on PORT 3333"));
-
 app.use(express.json());
 
-app.use("/categories", categoriesRoutes);
-<<<<<<< HEAD
+app.use(routes)
 
-=======
->>>>>>> ef618148756b11d2d051c9b16549bd4fb8a01cf0
-app.use("/specifications", specificationsRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+app.listen(3333, () => console.log("Server is Running on PORT 3333"));
