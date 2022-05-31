@@ -12,12 +12,12 @@ class ImportCategoryUseCase {
       const stream = fs.createReadStream(file.path);
       const categories: IImportCategoryDTO[] = [];
 
-      const parseFile = csvParse({delimiter: ';'});
+      const parseFile = csvParse({ delimiter: ";" });
 
       stream.pipe(parseFile);
 
       parseFile
-        .on("data",async (line) => {
+        .on("data", async (line) => {
           const [name, description] = line;
           categories.push({
             name,
@@ -25,6 +25,7 @@ class ImportCategoryUseCase {
           });
         })
         .on("end", () => {
+          fs.promises.unlink(file.path);
           resolve(categories);
         })
         .on("error", (err) => {
@@ -37,7 +38,6 @@ class ImportCategoryUseCase {
     const categories = await this.loadCategories(file);
 
     categories.map(async (category) => {
-      console.log(category);
       const { name, description } = category;
 
       const existCategory = this.categoriesRepository.findByName(name);

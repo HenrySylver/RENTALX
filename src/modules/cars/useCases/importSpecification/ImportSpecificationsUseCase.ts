@@ -14,7 +14,7 @@ class ImportSpecificationsUseCase {
       const stream = fs.createReadStream(file.path);
       const Specifications: IImportSpecificationsDTO[] = [];
 
-      const parseFile = csvParse({delimiter: ';'});
+      const parseFile = csvParse({ delimiter: ";" });
 
       stream.pipe(parseFile);
 
@@ -27,6 +27,7 @@ class ImportSpecificationsUseCase {
           });
         })
         .on("end", () => {
+          fs.promises.unlink(file.path);
           resolve(Specifications);
         })
         .on("error", (err) => {
