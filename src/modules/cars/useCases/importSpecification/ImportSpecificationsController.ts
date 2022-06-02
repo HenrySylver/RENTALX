@@ -7,10 +7,10 @@ class ImportSpecificationsController {
     private importSpecificationsUseCase: ImportSpecificationsUseCase
   ) {}
 
-  handle(request: Request, response: Response): Response {
+  async handle(request: Request, response: Response): Promise<Response> {
     const { file } = request;
 
-    this.importSpecificationsUseCase.execute(file);
+    await this.importSpecificationsUseCase.execute(file);
 
     return response
       .status(201)

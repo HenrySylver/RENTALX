@@ -1,12 +1,12 @@
-import { Category } from "../model/Category";
-import { IRequestDTO } from "../shared/utils/dtos/IRequestDTO";
+import { Category } from "../entities/Category";
+import { ICreateCategoryDTO } from "../shared/utils/dtos/ICreateCategoryDTO";
 
 interface ICategoriesRepository {
-  findByName(name: string): Category;
+  findByName(name: string): Promise<Category>;
 
-  create({ name, description }: IRequestDTO);
+  create({ name, description }: ICreateCategoryDTO): Promise<void>;
 
-  list(): Category[];
+  list(): Promise<Category[]>;
 }
 
 export { ICategoriesRepository };

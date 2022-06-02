@@ -12,7 +12,7 @@ class ImportSpecificationsUseCase {
   ): Promise<IImportSpecificationsDTO[]> {
     return new Promise((resolve, reject) => {
       const stream = fs.createReadStream(file.path);
-      const Specifications: IImportSpecificationsDTO[] = [];
+      const specifications: IImportSpecificationsDTO[] = [];
 
       const parseFile = csvParse({ delimiter: ";" });
 
@@ -21,14 +21,14 @@ class ImportSpecificationsUseCase {
       parseFile
         .on("data", async (line) => {
           const [name, description] = line;
-          Specifications.push({
+          specifications.push({
             name,
             description,
           });
         })
         .on("end", () => {
           fs.promises.unlink(file.path);
-          resolve(Specifications);
+          resolve(specifications);
         })
         .on("error", (err) => {
           reject(err);
@@ -37,16 +37,16 @@ class ImportSpecificationsUseCase {
   }
 
   async execute(file: Express.Multer.File): Promise<void> {
-    const Specifications = await this.loadSpecifications(file);
+    const specifications = await this.loadSpecifications(file);
 
-    Specifications.map(async (Specifications) => {
+    specifications.map(async (Specifications) => {
       const { name, description } = Specifications;
 
       const existSpecifications =
-        this.SpecificationsRepository.findByName(name);
+        await this.SpecificationsRepository.findByName(name);
 
       if (!existSpecifications) {
-        this.SpecificationsRepository.create({
+        await this.SpecificationsRepository.create({
           name,
           description,
         });

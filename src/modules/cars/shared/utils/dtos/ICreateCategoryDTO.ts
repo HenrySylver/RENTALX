@@ -1,4 +1,4 @@
-export interface IRequestDTO {
+export interface ICreateCategoryDTO {
   name: string;
   description: string;
 }

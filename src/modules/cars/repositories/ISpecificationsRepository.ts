@@ -1,12 +1,12 @@
-import { Specification } from "../model/Specification";
-import { IRequestDTO } from "../shared/utils/dtos/IRequestDTO";
+import { Specification } from "../entities/Specification";
+import { ICreateSpecificationDTO } from "../shared/utils/dtos/ICreateSpecificationDTO";
 
 interface ISpecificationsRepository {
-  findByName(name: string): Specification;
+  findByName(name: string): Promise<Specification>;
 
-  create({ description, name }: IRequestDTO);
+  create({ description, name }: ICreateSpecificationDTO): Promise<void>;
 
-  list(): Specification[];
+  list(): Promise<Specification[]>;
 }
 
 export { ISpecificationsRepository };
