@@ -1,9 +1,9 @@
 import { Router } from "express";
 import multer from "multer";
 
-import createSpecificationController from "../modules/cars/useCases/createSpecification/index";
-import importSpecificationController from "../modules/cars/useCases/importSpecification";
-import listSpecificationsController from "../modules/cars/useCases/listSpecifications";
+import { CreateSpecificationController } from "../modules/cars/useCases/createSpecification/CreateSpecificationController";
+import { ImportSpecificationController } from "../modules/cars/useCases/importSpecification/ImportSpecificationsController";
+import { ListSpecificationsController } from "../modules/cars/useCases/listSpecifications/ListSpecificationsController";
 
 const specificationsRoutes = Router();
 
@@ -11,20 +11,20 @@ const upload = multer({
   dest: "./tmp",
 });
 
-specificationsRoutes.post("/", (request, response) => {
-  return createSpecificationController().handle(request, response);
-});
+const createSpecificationController = new CreateSpecificationController();
 
-specificationsRoutes.get("/", (request, response) => {
-  return listSpecificationsController().handle(request, response);
-});
+const importSpecificationController = new ImportSpecificationController();
+
+const listSpecificationController = new ListSpecificationsController();
+
+specificationsRoutes.post("/", createSpecificationController.handle);
+
+specificationsRoutes.get("/", listSpecificationController.handle);
 
 specificationsRoutes.post(
   "/import",
   upload.single("file"),
-  (request, response) => {
-    return importSpecificationController().handle(request, response);
-  }
+  importSpecificationController.handle
 );
 
 export { specificationsRoutes };

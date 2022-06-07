@@ -1,11 +1,16 @@
 import { parse as csvParse } from "csv-parse";
 import fs from "fs";
+import { inject, injectable } from "tsyringe";
 
 import { ISpecificationsRepository } from "../../repositories/ISpecificationsRepository";
 import { IImportSpecificationsDTO } from "../../shared/utils/dtos/IImportSpecificationsDTO";
 
+@injectable()
 class ImportSpecificationsUseCase {
-  constructor(private SpecificationsRepository: ISpecificationsRepository) {}
+  constructor(
+    @inject("SpecificationsRepository")
+    private SpecificationsRepository: ISpecificationsRepository
+  ) {}
 
   loadSpecifications(
     file: Express.Multer.File
