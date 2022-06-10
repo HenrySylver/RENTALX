@@ -57,9 +57,15 @@
         "description": "Upload a new category",
         "requestBody": {
           "content": {
-            "application/octet-stream": {
+            "multipart/form-data": {
               "schema": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
           }
@@ -119,13 +125,19 @@
     "/specifications/import": {
       "post": {
         "tags": ["Specification"],
-        "summary": "Upload cpecification",
-        "description": "Upload a new cpecification",
+        "summary": "Upload specification",
+        "description": "Upload a new specification",
         "requestBody": {
           "content": {
-            "application/octet-stream": {
+            "multipart/form-data": {
               "schema": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
           }
