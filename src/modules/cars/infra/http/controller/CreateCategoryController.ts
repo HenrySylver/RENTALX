@@ -9,14 +9,21 @@ export class CreateCategoryController {
 
     const { name, description } = request.body;
 
-    try {
-      await createCategoryService.execute({ name, description });
-    } catch (err) {
-      return response.status(500).json({ message: (err as Error).message });
-    }
+    const serviceResponse = await createCategoryService.execute({
+      name,
+      description,
+    });
 
-    return response
-      .status(201)
-      .json({ message: "Category created successfully." });
+    if (serviceResponse.err === false) {
+      return response.status(201).json({
+        message: "Category created successfully.",
+        category: serviceResponse.category,
+      });
+    }
+    return response.status(500).json({
+      message:
+        "This category already exists, please retry with another category name.",
+      body: serviceResponse.category,
+    });
   }
 }

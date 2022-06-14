@@ -1,8 +1,13 @@
 import { inject, injectable } from "tsyringe";
 
 import { ICreateSpecificationDTO } from "../dtos/ICreateSpecificationDTO";
+import { Specification } from "../infra/typeorm/entities/Specification";
 import { ISpecificationsRepository } from "../repositories/ISpecificationsRepository";
 
+interface ISpecification {
+  specification: Specification;
+  err: boolean;
+}
 @injectable()
 export class CreateSpecificationService {
   constructor(
@@ -10,14 +15,32 @@ export class CreateSpecificationService {
     private specificationsRepository: ISpecificationsRepository
   ) {}
 
-  async execute({ name, description }: ICreateSpecificationDTO) {
+  async execute({
+    name,
+    description,
+  }: ICreateSpecificationDTO): Promise<ISpecification> {
     const specificationAlreadyExists =
       await this.specificationsRepository.findByName(name);
 
+    let specification: ISpecification;
+
     if (specificationAlreadyExists) {
-      throw new Error("Specification already exists!");
+      specification = {
+        specification: specificationAlreadyExists,
+        err: true,
+      };
+    } else {
+      const repositoryResponse = await this.specificationsRepository.create({
+        name,
+        description,
+      });
+
+      specification = {
+        specification: repositoryResponse,
+        err: false,
+      };
     }
 
-    await this.specificationsRepository.create({ name, description });
+    return specification;
   }
 }

@@ -11,14 +11,21 @@ export class CreateSpecificationController {
 
     const { name, description } = request.body;
 
-    try {
-      await createSpecificationService.execute({ name, description });
-    } catch (err) {
-      return response.status(500).json({ message: (err as Error).message });
-    }
+    const serviceResponse = await createSpecificationService.execute({
+      name,
+      description,
+    });
 
-    return response
-      .status(201)
-      .json({ message: "Specification created sucessfully." });
+    if (serviceResponse.err === false) {
+      return response.status(201).json({
+        message: "Specification created successfully.",
+        specification: serviceResponse.specification,
+      });
+    }
+    return response.status(500).json({
+      message:
+        "This specification already exists, please retry with another specification name.",
+      body: serviceResponse.specification,
+    });
   }
 }

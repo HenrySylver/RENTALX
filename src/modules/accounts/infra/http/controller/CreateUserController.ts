@@ -10,7 +10,7 @@ export class CreateUserController {
     const { full_name, username, password, email, driver_license } =
       request.body;
 
-    await createUserUseCase.execute({
+    const serviceResponse = await createUserUseCase.execute({
       full_name,
       username,
       password,
@@ -18,6 +18,13 @@ export class CreateUserController {
       driver_license,
     });
 
-    return response.status(201).json({ message: "User created successfully." });
+    if (!serviceResponse) {
+      return response
+        .status(201)
+        .json({ message: "User created successfully." });
+    }
+    return response.status(500).json({
+      message: `The given ${serviceResponse} is already in use by another account. If this is your account, you can submit a request to retrieve it's password at any time or try again registering your account with another ${serviceResponse}.`,
+    });
   }
 }
