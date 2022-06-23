@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { usersRoutes } from "../../../../modules/accounts/infra/http/routes/users.routes";
+import { accountsRoutes } from "../../../../modules/accounts/infra/http/routes/accounts.routes";
 import { categoriesRoutes } from "../../../../modules/cars/infra/http/routes/categories.routes";
 import { specificationsRoutes } from "../../../../modules/cars/infra/http/routes/specifications.routes";
 
@@ -10,4 +10,4 @@ routes.use("/categories", categoriesRoutes);
 
 routes.use("/specifications", specificationsRoutes);
 
-routes.use("/users", usersRoutes);
+routes.use("/accounts", accountsRoutes);
