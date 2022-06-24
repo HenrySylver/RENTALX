@@ -16,15 +16,23 @@ export class AuthenticateAccountController {
       password,
     });
 
-    if (serviceResponse.auth.login_error === false) {
+    const { account_username, account_email, login_token } = serviceResponse;
+
+    const session_info = {
+      account_username,
+      account_email,
+      login_token,
+    };
+
+    if (serviceResponse.login_error === false) {
       return response.status(201).json({
         message: "You've sucessfully authenticated your account.",
-        body: serviceResponse,
+        session_info,
       });
     }
     return response.status(500).json({
       message:
-        "Any registry included doesn't match any of the given credentials. All is not lost, please verify your credentials and proceed with a new request.",
+        "Any registry included doesn't match any of the given credentials. However, all is not lost, please verify your credentials and proceed with a new request.",
     });
   }
 }
