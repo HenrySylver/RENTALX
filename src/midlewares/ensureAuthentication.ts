@@ -2,9 +2,15 @@ import { config } from "dotenv";
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 
+import { UsersRepository } from "../modules/accounts/infra/typeorm/repositories/UsersRepository";
+
+interface IPayload {
+  sub: string;
+}
 interface IAuth {
   err: boolean;
-  message: string | unknown;
+  message?: string | unknown;
+  user_id?: string;
 }
 
 config();
@@ -13,7 +19,7 @@ export async function ensureAuthentication(
   request: Request,
   response: Response,
   next: NextFunction
-): Promise<Response> {
+): Promise<void | Response> {
   const [, token] = request.headers.authorization.split(" ");
 
   let auth: IAuth;
@@ -24,15 +30,30 @@ export async function ensureAuthentication(
       message:
         "Unfortunately, a missing token was expected, please verify your request.",
     };
+    response.status(401).json({ message: auth.message });
   } else {
     try {
-      verify(token, process.env.TOKEN_MD5);
+      const payload = verify(token, process.env.TOKEN_MD5) as IPayload;
 
       auth = {
         err: false,
-        message: "Token authenticated sucessfully",
+        user_id: payload.sub,
       };
-    } catch {
+
+      const usersRepository = new UsersRepository();
+
+      const user = await usersRepository.findById(auth.user_id);
+
+      if (!user) {
+        response.status(404).json({
+          message:
+            "This user doesn't exists. However, all is not lost, please verify your credentials and proceed with a new request.",
+        });
+      }
+
+      next();
+    } catch (err) {
+      console.log(err);
       auth = {
         err: true,
         message:
@@ -41,8 +62,7 @@ export async function ensureAuthentication(
     }
   }
 
-  if (auth.err === false) {
-    return response.status(201).json({ message: auth.message });
+  if (auth.err === true) {
+    response.status(401).json({ message: auth.message });
   }
-  return response.status(401).json({ message: auth.message });
 }

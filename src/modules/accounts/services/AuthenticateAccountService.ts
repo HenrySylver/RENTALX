@@ -40,8 +40,7 @@ export class AuthenticateAccountService {
       if (!passwordMatch) {
         authentication.login_error = true;
       } else {
-        // sha512
-        const token = sign({}, process.env.TOKEN_SHA1, {
+        const token = sign({}, "4d4095469362c75adff812bd5bf310ce", {
           subject: user.id,
           expiresIn: "1d",
         });
