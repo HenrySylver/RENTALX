@@ -21,6 +21,7 @@
 		"prettier"
 	],
 	"rules": {
+    "no-new": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "no-plusplus": "off",

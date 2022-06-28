@@ -6,6 +6,7 @@ import "./shared/container";
 import "./database";
 import { routes } from "./shared/infra/http/routes";
 import swaggerFile from "./swagger.json";
+import "express-async-errors";
 
 const app = express();
 

@@ -9,7 +9,7 @@ interface IPayload {
 }
 interface IAuth {
   err: boolean;
-  message?: string | unknown;
+  message?: string;
   user_id?: string;
 }
 
@@ -30,7 +30,6 @@ export async function ensureAuthentication(
       message:
         "Unfortunately, a missing token was expected, please verify your request.",
     };
-    response.status(401).json({ message: auth.message });
   } else {
     try {
       const payload = verify(token, process.env.TOKEN_MD5) as IPayload;
@@ -45,15 +44,13 @@ export async function ensureAuthentication(
       const user = await usersRepository.findById(auth.user_id);
 
       if (!user) {
-        response.status(404).json({
+        auth = {
+          err: true,
           message:
             "This user doesn't exists. However, all is not lost, please verify your credentials and proceed with a new request.",
-        });
+        };
       }
-
-      next();
     } catch (err) {
-      console.log(err);
       auth = {
         err: true,
         message:
@@ -62,7 +59,9 @@ export async function ensureAuthentication(
     }
   }
 
-  if (auth.err === true) {
+  if (auth.err === false) {
+    next();
+  } else {
     response.status(401).json({ message: auth.message });
   }
 }
