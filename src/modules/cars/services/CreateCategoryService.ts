@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ICreateCategoryDTO } from "../dtos/ICreateCategoryDTO";
-import { Category } from "../infra/typeorm/entities/Category";
+import { Category } from "../infra/http/routes/typeorm/entities/Category";
 import { ICategoriesRepository } from "../repositories/ICategoriesRepository";
 
 interface ICategory {

@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ICreateSpecificationDTO } from "../dtos/ICreateSpecificationDTO";
-import { Specification } from "../infra/typeorm/entities/Specification";
+import { Specification } from "../infra/http/routes/typeorm/entities/Specification";
 import { ISpecificationsRepository } from "../repositories/ISpecificationsRepository";
 
 interface ISpecification {
