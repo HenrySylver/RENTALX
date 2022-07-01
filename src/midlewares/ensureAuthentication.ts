@@ -50,6 +50,10 @@ export async function ensureAuthentication(
             "This user doesn't exists. However, all is not lost, please verify your credentials and proceed with a new request.",
         };
       }
+
+      request.user = {
+        id: user.avatar,
+      };
     } catch (err) {
       auth = {
         err: true,
