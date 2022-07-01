@@ -52,7 +52,7 @@ export async function ensureAuthentication(
       }
 
       request.user = {
-        id: user.avatar,
+        id: payload.sub,
       };
     } catch (err) {
       auth = {

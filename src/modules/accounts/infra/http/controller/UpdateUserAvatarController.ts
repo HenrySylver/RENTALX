@@ -7,7 +7,7 @@ export class UpdateUserAvatarController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
 
-    const avFile = null;
+    const avFile = request.file.filename;
 
     const updateUserAvatarService = container.resolve(UpdateUserAvatarService);
 
