@@ -1,3 +1,6 @@
+import { Response } from "express";
+
+import { AppError } from "../../../../shared/errors/AppError";
 import { CreateCategoryService } from "../../services/CreateCategoryService";
 import { CategoriesRepository } from "../repositories/CategoriesRepository";
 
@@ -13,15 +16,15 @@ describe("Create Category", () => {
   });
 
   it("Should be able to create a new category", async () => {
-    const testCategory = {
+    const category = {
       name: "Category Test",
       description: "Category description test",
     };
 
-    await createCategoryService.execute(testCategory);
+    await createCategoryService.execute(category);
 
     const categoryCreated = await categoriesRepository.findByName(
-      testCategory.name
+      category.name
     );
 
     console.log(categoryCreated);
@@ -29,18 +32,22 @@ describe("Create Category", () => {
     expect(categoryCreated).toHaveProperty("id");
   });
 
-  it("Shouldn't be able to create a new category with a previously created category name", async () => {
+  it("Shouldn't be able to create a new category with an existing name", async () => {
     expect(async () => {
-      const testCategory = {
+      const category = {
         name: "Category Test",
         description: "Category description test",
       };
 
-      await createCategoryService.execute(testCategory);
+      await createCategoryService.execute({
+        name: category.name,
+        description: category.description,
+      });
 
-      const categoryCreated = await categoriesRepository.findByName(
-        testCategory.name
-      );
+      await createCategoryService.execute({
+        name: category.name,
+        description: category.description,
+      });
     }).rejects.toBeInstanceOf();
   });
 });
