@@ -1,5 +1,3 @@
-import { Response } from "express";
-
 import { AppError } from "../../../../shared/errors/AppError";
 import { CreateCategoryService } from "../../services/CreateCategoryService";
 import { CategoriesRepository } from "../repositories/CategoriesRepository";
@@ -48,6 +46,6 @@ describe("Create Category", () => {
         name: category.name,
         description: category.description,
       });
-    }).rejects.toBeInstanceOf();
+    }).rejects.toBeInstanceOf(AppError);
   });
 });
