@@ -21,13 +21,13 @@ export class CreateCategoryService {
       throw new AppError(
         "This category already exists, please retry with another category name."
       );
-    } else {
-      const category = await this.categoriesRepository.create({
-        name,
-        description,
-      });
-
-      return category;
     }
+
+    const category = await this.categoriesRepository.create({
+      name,
+      description,
+    });
+
+    return category;
   }
 }
