@@ -1,7 +1,6 @@
+import { Category } from "@modules/cars/infra/typeorm/entities/Category";
+import { ISpecificationsRepository } from "@modules/cars/repositories/ISpecificationsRepository";
 import { inject, injectable } from "tsyringe";
-
-import { Category } from "../infra/http/routes/typeorm/entities/Category";
-import { ISpecificationsRepository } from "../repositories/ISpecificationsRepository";
 
 @injectable()
 export class ListSpecificationsService {

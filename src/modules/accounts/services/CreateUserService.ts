@@ -1,8 +1,9 @@
+import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
+import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { hash } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
 
-import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
-import { IUsersRepository } from "../repositories/IUsersRepository";
+import { AppError } from "@shared/errors/AppError";
 
 @injectable()
 export class CreateUserService {
@@ -17,19 +18,21 @@ export class CreateUserService {
     password,
     email,
     driver_license,
-  }: ICreateUserDTO): Promise<string> {
+  }: ICreateUserDTO): Promise<void> {
     const emailArealdyExists = await this.usersRepository.findByEmail(email);
 
     const usernameAlreadyExists = await this.usersRepository.findByUsername(
       username
     );
 
-    let alreadyExists: string;
-
     if (emailArealdyExists) {
-      alreadyExists = "email";
+      throw new AppError(
+        "The given email is already in use by another account. If this is your account, you can submit a request to retrieve it's password at any time or try again registering your account with another email adress."
+      );
     } else if (usernameAlreadyExists) {
-      alreadyExists = "username";
+      throw new AppError(
+        "The given username is already in use by another account. If this is your account, you can submit a request to retrieve it's password at any time or try again registering your account with another username."
+      );
     } else {
       const passwordHash = await hash(password, 8);
 
@@ -41,7 +44,5 @@ export class CreateUserService {
         driver_license,
       });
     }
-
-    return alreadyExists;
   }
 }

@@ -1,6 +1,7 @@
-import { AppError } from "../../../../shared/errors/AppError";
-import { CreateCategoryService } from "../../services/CreateCategoryService";
-import { CategoriesRepository } from "../repositories/CategoriesRepository";
+import { CategoriesRepository } from "@modules/cars/__test__/repositories/CategoriesRepository";
+import { CreateCategoryService } from "@modules/cars/services/CreateCategoryService";
+
+import { AppError } from "@shared/errors/AppError";
 
 let createCategoryService: CreateCategoryService;
 
@@ -24,8 +25,6 @@ describe("Create Category", () => {
     const categoryCreated = await categoriesRepository.findByName(
       category.name
     );
-
-    console.log(categoryCreated);
 
     expect(categoryCreated).toHaveProperty("id");
   });

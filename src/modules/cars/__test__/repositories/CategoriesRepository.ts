@@ -1,6 +1,6 @@
-import { ICreateCategoryDTO } from "../../dtos/ICreateCategoryDTO";
-import { Category } from "../../infra/http/routes/typeorm/entities/Category";
-import { ICategoriesRepository } from "../../repositories/fakes/ICategoriesRepository";
+import { ICreateCategoryDTO } from "@modules/cars/dtos/ICreateCategoryDTO";
+import { Category } from "@modules/cars/infra/typeorm/entities/Category";
+import { ICategoriesRepository } from "@modules/cars/repositories/fakes/ICategoriesRepository";
 
 export class CategoriesRepository implements ICategoriesRepository {
   categories: Category[] = [];

@@ -1,10 +1,10 @@
+import { CreateCategoryController } from "@modules/cars/infra/http/controller/CreateCategoryController";
+import { ImportCategoryController } from "@modules/cars/infra/http/controller/ImportCategoryController";
+import { ListCategoriesController } from "@modules/cars/infra/http/controller/ListCategoriesController";
 import { Router } from "express";
 import multer from "multer";
 
-import { ensureAuthentication } from "../../../../../midlewares/ensureAuthentication";
-import { CreateCategoryController } from "../controller/CreateCategoryController";
-import { ImportCategoryController } from "../controller/ImportCategoryController";
-import { ListCategoriesController } from "../controller/ListCategoriesController";
+import { ensureAuthentication } from "@shared/infra/http/middlewares/ensureAuthentication";
 
 export const categoriesRoutes = Router();
 

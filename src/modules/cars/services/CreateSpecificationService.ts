@@ -1,13 +1,10 @@
+import { ICreateSpecificationDTO } from "@modules/cars/dtos/ICreateSpecificationDTO";
+import { Specification } from "@modules/cars/infra/typeorm/entities/Specification";
+import { ISpecificationsRepository } from "@modules/cars/repositories/ISpecificationsRepository";
 import { inject, injectable } from "tsyringe";
 
-import { ICreateSpecificationDTO } from "../dtos/ICreateSpecificationDTO";
-import { Specification } from "../infra/http/routes/typeorm/entities/Specification";
-import { ISpecificationsRepository } from "../repositories/ISpecificationsRepository";
+import { AppError } from "@shared/errors/AppError";
 
-interface ISpecification {
-  specification: Specification;
-  err: boolean;
-}
 @injectable()
 export class CreateSpecificationService {
   constructor(
@@ -18,29 +15,21 @@ export class CreateSpecificationService {
   async execute({
     name,
     description,
-  }: ICreateSpecificationDTO): Promise<ISpecification> {
+  }: ICreateSpecificationDTO): Promise<Specification> {
     const specificationAlreadyExists =
       await this.specificationsRepository.findByName(name);
 
-    let specification: ISpecification;
-
     if (specificationAlreadyExists) {
-      specification = {
-        specification: specificationAlreadyExists,
-        err: true,
-      };
+      throw new AppError(
+        "This specification already exists, please retry with another specification name."
+      );
     } else {
-      const repositoryResponse = await this.specificationsRepository.create({
+      const specification = await this.specificationsRepository.create({
         name,
         description,
       });
 
-      specification = {
-        specification: repositoryResponse,
-        err: false,
-      };
+      return specification;
     }
-
-    return specification;
   }
 }

@@ -1,7 +1,6 @@
+import { ImportSpecificationsService } from "@modules/cars/services/ImportSpecificationsService";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-
-import { ImportSpecificationsService } from "../../../services/ImportSpecificationsService";
 
 export class ImportSpecificationController {
   async handle(request: Request, response: Response): Promise<Response> {

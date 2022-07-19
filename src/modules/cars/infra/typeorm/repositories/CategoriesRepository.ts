@@ -1,8 +1,8 @@
+import { ICreateCategoryDTO } from "@modules/cars/dtos/ICreateCategoryDTO";
+import { ICategoriesRepository } from "@modules/cars/repositories/ICategoriesRepository";
 import { sub } from "date-fns";
 import { getRepository, Repository } from "typeorm";
 
-import { ICreateCategoryDTO } from "../../../dtos/ICreateCategoryDTO";
-import { ICategoriesRepository } from "../../../repositories/ICategoriesRepository";
 import { Category } from "../entities/Category";
 
 export class CategoriesRepository implements ICategoriesRepository {

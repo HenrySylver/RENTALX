@@ -1,13 +1,10 @@
+import { ICreateCategoryDTO } from "@modules/cars/dtos/ICreateCategoryDTO";
+import { Category } from "@modules/cars/infra/typeorm/entities/Category";
+import { ICategoriesRepository } from "@modules/cars/repositories/ICategoriesRepository";
 import { inject, injectable } from "tsyringe";
 
-import { ICreateCategoryDTO } from "../dtos/ICreateCategoryDTO";
-import { Category } from "../infra/http/routes/typeorm/entities/Category";
-import { ICategoriesRepository } from "../repositories/ICategoriesRepository";
+import { AppError } from "@shared/errors/AppError";
 
-interface ICategory {
-  category: Category;
-  err: boolean;
-}
 @injectable()
 export class CreateCategoryService {
   constructor(
@@ -15,30 +12,22 @@ export class CreateCategoryService {
     private categoriesRepository: ICategoriesRepository
   ) {}
 
-  async execute({ name, description }: ICreateCategoryDTO): Promise<ICategory> {
+  async execute({ name, description }: ICreateCategoryDTO): Promise<Category> {
     const categoryAlreadyExists = await this.categoriesRepository.findByName(
       name
     );
 
-    let category: ICategory;
-
     if (categoryAlreadyExists) {
-      category = {
-        category: categoryAlreadyExists,
-        err: true,
-      };
+      throw new AppError(
+        "This category already exists, please retry with another category name."
+      );
     } else {
-      const repositoryResponse = await this.categoriesRepository.create({
+      const category = await this.categoriesRepository.create({
         name,
         description,
       });
 
-      category = {
-        category: repositoryResponse,
-        err: false,
-      };
+      return category;
     }
-
-    return category;
   }
 }

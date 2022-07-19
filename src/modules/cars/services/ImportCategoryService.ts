@@ -1,9 +1,8 @@
+import { IImportCategoryDTO } from "@modules/cars/dtos/IImportCategoryDTO";
+import { ICategoriesRepository } from "@modules/cars/repositories/ICategoriesRepository";
 import { parse as csvParse } from "csv-parse";
 import fs from "fs";
 import { inject, injectable } from "tsyringe";
-
-import { IImportCategoryDTO } from "../dtos/IImportCategoryDTO";
-import { ICategoriesRepository } from "../repositories/ICategoriesRepository";
 
 @injectable()
 export class ImportCategoryService {

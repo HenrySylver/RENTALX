@@ -1,9 +1,8 @@
+import { IImportSpecificationsDTO } from "@modules/cars/dtos/IImportSpecificationsDTO";
+import { ISpecificationsRepository } from "@modules/cars/repositories/ISpecificationsRepository";
 import { parse as csvParse } from "csv-parse";
 import fs from "fs";
 import { inject, injectable } from "tsyringe";
-
-import { IImportSpecificationsDTO } from "../dtos/IImportSpecificationsDTO";
-import { ISpecificationsRepository } from "../repositories/ISpecificationsRepository";
 
 @injectable()
 export class ImportSpecificationsService {

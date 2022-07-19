@@ -1,11 +1,11 @@
+import uploadConfig from "@config/upload";
+import { AuthenticateAccountController } from "@modules/accounts/infra/http/controller/AuthenticateAccountController";
+import { CreateUserController } from "@modules/accounts/infra/http/controller/CreateUserController";
+import { UpdateUserAvatarController } from "@modules/accounts/infra/http/controller/UpdateUserAvatarController";
 import { Router } from "express";
 import multer from "multer";
 
-import uploadConfig from "../../../../../config/upload";
-import { ensureAuthentication } from "../../../../../midlewares/ensureAuthentication";
-import { AuthenticateAccountController } from "../controller/AuthenticateAccountController";
-import { CreateUserController } from "../controller/CreateUserController";
-import { UpdateUserAvatarController } from "../controller/UpdateUserAvatarController";
+import { ensureAuthentication } from "@shared/infra/http/middlewares/ensureAuthentication";
 
 export const accountsRoutes = Router();
 

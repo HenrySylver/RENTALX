@@ -1,10 +1,10 @@
+import { CreateSpecificationController } from "@modules/cars/infra/http/controller/CreateSpecificationController";
+import { ImportSpecificationController } from "@modules/cars/infra/http/controller/ImportSpecificationsController";
+import { ListSpecificationsController } from "@modules/cars/infra/http/controller/ListSpecificationsController";
 import { Router } from "express";
 import multer from "multer";
 
-import { ensureAuthentication } from "../../../../../midlewares/ensureAuthentication";
-import { CreateSpecificationController } from "../controller/CreateSpecificationController";
-import { ImportSpecificationController } from "../controller/ImportSpecificationsController";
-import { ListSpecificationsController } from "../controller/ListSpecificationsController";
+import { ensureAuthentication } from "@shared/infra/http/middlewares/ensureAuthentication";
 
 export const specificationsRoutes = Router();
 

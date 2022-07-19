@@ -1,16 +1,16 @@
+import { IAuthenticateUsersDTO } from "@modules/accounts/dtos/IAuthenticateUsersDTO";
+import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { compare } from "bcryptjs";
 import { config } from "dotenv";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
-import { IAuthenticateUsersDTO } from "../dtos/IAuthenticateUsersDTO";
-import { IUsersRepository } from "../repositories/IUsersRepository";
+import { AppError } from "@shared/errors/AppError";
 
 interface IAuthentication {
   account_username?: string;
   account_email?: string;
   login_token?: string;
-  login_error: boolean;
 }
 
 config();
@@ -31,16 +31,20 @@ export class AuthenticateAccountService {
     let authentication: IAuthentication;
 
     if (!user) {
-      authentication = {
-        login_error: true,
-      };
+      throw new AppError(
+        "Any registry included doesn't match any of the given credentials. However, all is not lost, please verify your credentials and proceed with a new request.",
+        500
+      );
     } else {
       const passwordMatch = await compare(password, user.password);
 
       if (!passwordMatch) {
-        authentication.login_error = true;
+        throw new AppError(
+          "Any registry included doesn't match any of the given credentials. However, all is not lost, please verify your credentials and proceed with a new request.",
+          500
+        );
       } else {
-        const token = sign({}, "4d4095469362c75adff812bd5bf310ce", {
+        const token = sign({}, process.env.TOKEN_MD5, {
           subject: user.id,
           expiresIn: "1d",
         });
@@ -49,7 +53,6 @@ export class AuthenticateAccountService {
           account_username: user.username,
           account_email: user.email,
           login_token: token,
-          login_error: false,
         };
       }
     }

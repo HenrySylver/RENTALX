@@ -1,7 +1,6 @@
+import { ListCategoriesService } from "@modules/cars/services/ListCategoriesService";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-
-import { ListCategoriesService } from "../../../services/ListCategoriesService";
 
 export class ListCategoriesController {
   async handle(request: Request, response: Response): Promise<Response> {

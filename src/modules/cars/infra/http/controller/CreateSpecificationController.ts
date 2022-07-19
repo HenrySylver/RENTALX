@@ -1,7 +1,6 @@
+import { CreateSpecificationService } from "@modules/cars/services/CreateSpecificationService";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-
-import { CreateSpecificationService } from "../../../services/CreateSpecificationService";
 
 export class CreateSpecificationController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -16,16 +15,9 @@ export class CreateSpecificationController {
       description,
     });
 
-    if (serviceResponse.err === false) {
-      return response.status(201).json({
-        message: "Specification created successfully.",
-        specification: serviceResponse.specification,
-      });
-    }
-    return response.status(500).json({
-      message:
-        "This specification already exists, please retry with another specification name.",
-      body: serviceResponse.specification,
+    return response.status(201).json({
+      message: "Specification created successfully.",
+      serviceResponse,
     });
   }
 }
